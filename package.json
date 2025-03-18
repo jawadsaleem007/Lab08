@@ -15,7 +15,7 @@
     "supertest": "^7.0.0"
   },
   "jest": {
-  "testTimeout": 15000
+  "testTimeout": 1500
 }
 
 }

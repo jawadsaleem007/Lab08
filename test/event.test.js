@@ -6,7 +6,7 @@ describe('Event API', () => {
 
     beforeAll(async () => {
         await request(app).post('/register').send({ username: 'testuser', password: 'password123' });
-        
+
         const loginRes = await request(app).post('/login').send({ username: 'testuser', password: 'password123' });
         token = loginRes.body.token;
     });
@@ -16,7 +16,7 @@ describe('Event API', () => {
             .post('/events')
             .set('Authorization', token)
             .send({ name: 'Meeting', description: 'Team meeting', date: '2025-05-01', category: 'Work', reminder: true });
-        
+
         expect(res.status).toBe(200);
         expect(res.body.message).toBe('Event created');
     });
@@ -28,5 +28,9 @@ describe('Event API', () => {
 
         expect(res.status).toBe(200);
         expect(Array.isArray(res.body)).toBe(true);
+    });
+
+    afterAll(() => {
+        app.close();
     });
 });
