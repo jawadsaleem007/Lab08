@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../Lab08/.github/workflows/code'); 
+const app = require('../code'); 
 
 describe('Event API', () => {
     let token = '';
