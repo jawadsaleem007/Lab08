@@ -1,26 +1,19 @@
 const request = require('supertest');
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
-const app = require('../code');
+const app = require('../code'); 
 
 describe('Event API', () => {
-    let mongoServer;
     let token = '';
 
     beforeAll(async () => {
-        mongoServer = await MongoMemoryServer.create();
-        const mongoUri = mongoServer.getUri();
-        await mongoose.connect(mongoUri, { dbName: 'test' });
+        const res = await request(app)
+            .post('/register')
+            .send({ username: 'testuser', password: 'password123' });
 
-        await request(app).post('/register').send({ username: 'testuser', password: 'password123' });
+        const loginRes = await request(app)
+            .post('/login')
+            .send({ username: 'testuser', password: 'password123' });
 
-        const loginRes = await request(app).post('/login').send({ username: 'testuser', password: 'password123' });
         token = loginRes.body.token;
-    });
-
-    afterAll(async () => {
-        await mongoose.disconnect();
-        await mongoServer.stop();
     });
 
     it('should create an event', async () => {
